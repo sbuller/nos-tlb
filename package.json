@@ -1,0 +1,16 @@
+{
+  "name": "nos-tlb",
+  "version": "1.0.0",
+  "description": "Provide access to tiny-linux-bootloader's boot sector",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "bash ./buildasm.sh",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Stefan Buller <stefan.buller",
+  "license": "ISC",
+  "dependencies": {
+    "length-stream": "^0.1.1",
+    "stream-concat": "^0.1.0"
+  }
+}
