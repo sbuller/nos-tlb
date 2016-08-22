@@ -2,7 +2,12 @@ const fs = require('fs')
 const StreamConcat = require('stream-concat')
 const {Readable} = require('stream')
 const lstream = require('length-stream')
+const debug = require('debug')('nos-tlb')
+
 let bsect = fs.readFileSync(`${__dirname}/bsect`)
+const offsetMarker = Buffer.from('ddccbbaa', 'hex')
+const initSizeOffset = bsect.lastIndexOf(offsetMarker)
+debug('InitSizeOffset = %s', initSizeOffset)
 
 // kernel and init are streams
 module.exports = function build(kernel, init, cb) {
@@ -14,11 +19,11 @@ module.exports = function build(kernel, init, cb) {
 		let buffer = Buffer.alloc(4)
 		buffer.writeUInt32LE(initsize)
 		if (dest instanceof Buffer) {
-			buffer.copy(dest, 0x1bd)
+			buffer.copy(dest, initSizeOffset)
 		} else {
 			// hopefully dest is an fd
 			cb = cb || (()=>{})
-			fs.write(dest, buffer, 0, 4, 0x1bd, cb)
+			fs.write(dest, buffer, 0, 4, initSizeOffset, cb)
 		}
 	}
 	return new StreamConcat([
@@ -53,3 +58,5 @@ function sectorPadding(lengthCB) {
 	}
 	return ret
 }
+
+module.exports.initSizeOffset = initSizeOffset

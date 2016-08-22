@@ -10,6 +10,7 @@
   "author": "Stefan Buller <stefan.buller",
   "license": "ISC",
   "dependencies": {
+    "debug": "^2.2.0",
     "length-stream": "^0.1.1",
     "stream-concat": "^0.1.0"
   }
